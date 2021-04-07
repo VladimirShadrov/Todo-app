@@ -1,0 +1,23 @@
+@import './styles.scss';
+
+$white: rgba(255, 255, 255, 1);
+$bottom-background-night: rgba(23, 24, 35, 1);
+
+body {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
+}
+
+.container {
+  width: 100%;
+  max-width: 588px;
+  padding: 70px 24px 0 24px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 294px);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
