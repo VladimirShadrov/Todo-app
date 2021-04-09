@@ -29,17 +29,19 @@
             <div class="tasks__item tasks__item-completed">
               <div class="tasks__circle"></div>
               <p class="tasks__text">Complete online JavaScript course</p>
-              <a href="#" class="tasks__close-btn"></a>
+              <a href="#" class="tasks__close-btn" data-id="delete-task"></a>
             </div>
             <div class="tasks__item">
               <div class="tasks__circle"></div>
               <p class="tasks__text">Jog around the park 3x</p>
-              <a href="#" class="tasks__close-btn"></a>
+              <a href="#" class="tasks__close-btn" data-id="delete-task"></a>
             </div>
             <div class="tasks__item">
               <div class="tasks__circle"></div>
-              <p class="tasks__text">10 minutes meditation</p>
-              <a href="#" class="tasks__close-btn"></a>
+              <p class="tasks__text">
+                10 minutes meditation10 minutes meditation10 minutes meditation
+              </p>
+              <a href="#" class="tasks__close-btn" data-id="delete-task"></a>
             </div>
 
             <!--  Temp  -->
@@ -82,12 +84,31 @@
               items left
             </div>
             <div class="tasks__constrols-container">
-              <a href="#" class="tasks__control tasks__control-active">All</a>
-              <a href="#" class="tasks__control">Active</a>
-              <a href="#" class="tasks__control">Completed</a>
+              <a
+                href="#"
+                class="tasks__control tasks__control-active"
+                data-id="all"
+              >
+                All
+              </a>
+              <a href="#" class="tasks__control" data-id="active"> Active </a>
+              <a href="#" class="tasks__control" data-id="completed">
+                Completed
+              </a>
             </div>
-            <a href="#" class="tasks__control">Clear Completed</a>
+            <a href="#" class="tasks__clear-completed">Clear Completed</a>
           </div>
+        </div>
+        <div class="tasks__controls-mobile">
+          <a
+            href="#"
+            class="tasks__control tasks__control-active"
+            data-id="all"
+          >
+            All
+          </a>
+          <a href="#" class="tasks__control" data-id="active"> Active </a>
+          <a href="#" class="tasks__control" data-id="completed"> Completed </a>
         </div>
         <div class="footer">Drag and drop to reorder list</div>
       </div>
