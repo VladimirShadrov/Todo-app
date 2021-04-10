@@ -1,6 +1,9 @@
 import '../styles/styles.scss';
 import '../styles/general-settings.scss';
 import '../styles/todo.scss';
+import { defaultTasks } from './data';
+import { createEmptyItem } from './helpers';
+import { createTaskItem } from './helpers';
 
 // Перенос изображений и шрифтов
 require.context('../images', true, /\.(png|jpg|svg|gif)$/);
@@ -12,7 +15,8 @@ const themeSwitcher = document.querySelector('.switcher');
 const inputContainer = document.querySelector('.input');
 const inputField = document.querySelector('.input__text-field');
 const inputCircle = document.querySelector('.input__circle');
-const tasksContainer = document.querySelector('.tasks');
+const tasks = document.querySelector('.tasks');
+const tasksContainer = document.querySelector('.tasks__container');
 const taskItem = document.querySelectorAll('.tasks__item');
 const taskCompleted = document.querySelectorAll('.tasks__item-completed');
 const taskControlsContainer = document.querySelector('.tasks__footer');
@@ -23,6 +27,11 @@ const tasksControls = document.querySelectorAll('.tasks__control');
 const taskControlActive = document.querySelectorAll('.tasks__control-active');
 const clearCompletedButton = document.querySelector('.tasks__clear-completed');
 const footer = document.querySelector('.footer');
+
+function getItemsArray(selector) {
+  const items = Array.from(document.querySelectorAll(selector));
+  return items;
+}
 
 todo.addEventListener('click', function (event) {
   event.preventDefault();
@@ -59,6 +68,10 @@ function setTheme() {
 }
 
 function setNightTheme() {
+  const taskItem = getItemsArray('.tasks__item');
+  const taskCompleted = getItemsArray('.tasks__item-completed');
+  console.log(taskItem, taskCompleted);
+
   topBacground.style.background =
     "url('./images/night-bg.png') center / cover no-repeat";
   bottomBackGround.style.backgroundColor = 'rgba(23, 24, 35, 1)';
@@ -68,8 +81,8 @@ function setNightTheme() {
   inputContainer.style.color = 'rgba(118, 121, 146, 1)';
   inputField.style.color = 'rgba(200, 203, 231, 1)';
   inputCircle.style.border = '1px solid rgba(57, 58, 75, 0.95)';
-  tasksContainer.style.backgroundColor = 'rgba(37, 39, 61, 1)';
-  tasksContainer.style.boxShadow = '0px 35px 50px -15px rgba(0, 0, 0, 0.5)';
+  tasks.style.backgroundColor = 'rgba(37, 39, 61, 1)';
+  tasks.style.boxShadow = '0px 35px 50px -15px rgba(0, 0, 0, 0.5)';
   taskItem.forEach((item) => {
     item.style.color = 'rgba(200, 203, 231, 1)';
     item.querySelector('.tasks__circle').style.border =
@@ -125,6 +138,9 @@ function setNightTheme() {
 }
 
 function setDayTheme() {
+  const taskItem = document.querySelectorAll('.tasks__item');
+  const taskCompleted = document.querySelectorAll('.tasks__item-completed');
+
   topBacground.style.background =
     "url('./images/day-bg.png') center / cover no-repeat";
   bottomBackGround.style.backgroundColor = 'rgba(250, 250, 250, 1)';
@@ -134,9 +150,8 @@ function setDayTheme() {
   inputContainer.style.color = 'rgba(148, 149, 165, 1)';
   inputField.style.color = 'rgba(73, 76, 107, 1)';
   inputCircle.style.border = '1px solid rgba(227, 228, 241, 1)';
-  tasksContainer.style.backgroundColor = 'rgba(255, 255, 255, 1)';
-  tasksContainer.style.boxShadow =
-    '0px 35px 50px -15px rgba(194, 195, 214, 0.5)';
+  tasks.style.backgroundColor = 'rgba(255, 255, 255, 1)';
+  tasks.style.boxShadow = '0px 35px 50px -15px rgba(194, 195, 214, 0.5)';
   taskItem.forEach((item) => {
     item.style.color = 'rgba(73, 76, 107, 1)';
     item.querySelector('.tasks__circle').style.border =
@@ -188,18 +203,31 @@ function setDayTheme() {
   footer.style.color = 'rgba(148, 149, 165, 1)';
 }
 
+function fillTaskList() {
+  const currentTasks =
+    JSON.parse(localStorage.getItem('tasks')) || defaultTasks;
+  createTaskItem(currentTasks, tasksContainer);
+
+  const taskItems = document.querySelectorAll('.tasks__item');
+  taskItems.forEach((item) => {
+    if (item.dataset.id === 'true') {
+      item.classList.add('tasks__item-completed');
+    }
+  });
+}
+fillTaskList();
+
 function setThemeFromStorage() {
   const theme = getThemeFromStorage() || 'day';
 
   if (theme === 'day') {
-    setDayTheme();
     themeSwitcher.dataset.id = 'day';
+    setDayTheme();
   }
 
   if (theme === 'night') {
+    themeSwitcher.dataset.id = theme;
     setNightTheme();
-    themeSwitcher.dataset.id = 'night';
   }
 }
-
 setThemeFromStorage();

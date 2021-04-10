@@ -134,6 +134,10 @@
     align-items: center;
   }
 
+  &__item {
+    color: rgba(73, 76, 107, 1);
+  }
+
   &__item-completed {
     & > .tasks__circle {
       background: url('../images/marked.svg') center no-repeat;
