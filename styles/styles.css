@@ -33,18 +33,12 @@ body {
   width: 100%;
   font-size: 100%;
   line-height: 1;
-  font-size: 14px;
-  -ms-text-size-adjust: 100%;
-  -moz-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%; }
+  font-size: 14px; }
 
 input,
 button,
 textarea {
   font-family: inherit; }
-
-input::-ms-clear {
-  display: none; }
 
 button {
   cursor: pointer; }
@@ -106,18 +100,12 @@ body {
   width: 100%;
   font-size: 100%;
   line-height: 1;
-  font-size: 14px;
-  -ms-text-size-adjust: 100%;
-  -moz-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%; }
+  font-size: 14px; }
 
 input,
 button,
 textarea {
   font-family: inherit; }
-
-input::-ms-clear {
-  display: none; }
 
 button {
   cursor: pointer; }
@@ -205,18 +193,12 @@ body {
   width: 100%;
   font-size: 100%;
   line-height: 1;
-  font-size: 14px;
-  -ms-text-size-adjust: 100%;
-  -moz-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%; }
+  font-size: 14px; }
 
 input,
 button,
 textarea {
   font-family: inherit; }
-
-input::-ms-clear {
-  display: none; }
 
 button {
   cursor: pointer; }
@@ -278,18 +260,12 @@ body {
   width: 100%;
   font-size: 100%;
   line-height: 1;
-  font-size: 14px;
-  -ms-text-size-adjust: 100%;
-  -moz-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%; }
+  font-size: 14px; }
 
 input,
 button,
 textarea {
   font-family: inherit; }
-
-input::-ms-clear {
-  display: none; }
 
 button {
   cursor: pointer; }
@@ -433,7 +409,8 @@ body {
     line-height: 24px;
     letter-spacing: -0.25px;
     padding-left: 143px;
-    cursor: pointer; }
+    cursor: pointer;
+    background-color: transparent; }
 
 .tasks {
   background-color: white;
