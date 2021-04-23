@@ -4,25 +4,25 @@ import '../styles/todo.scss';
 import { defaultTasks } from './data';
 import { createEmptyItem } from './helpers';
 import { createTaskItem } from './helpers';
+import { getDomItem } from './helpers';
+import { getDomItemsArray } from './helpers';
 
 // Перенос изображений и шрифтов
 require.context('../images', true, /\.(png|jpg|svg|gif)$/);
 
-const todo = document.querySelector('.todo');
-const topBacground = document.querySelector('.todo__top-background');
-const bottomBackGround = document.querySelector('.todo__bottom-background');
-const themeSwitcher = document.querySelector('.switcher');
-const inputContainer = document.querySelector('.input');
-const inputField = document.querySelector('.input__text-field');
-const inputCircle = document.querySelector('.input__circle');
-const tasks = document.querySelector('.tasks');
-const tasksContainer = document.querySelector('.tasks__container');
-const taskItem = document.querySelectorAll('.tasks__item');
-const taskCompleted = document.querySelectorAll('.tasks__item-completed');
-const taskControlsContainer = document.querySelector('.tasks__footer');
-const taskControlsContainerMobile = document.querySelector(
-  '.tasks__controls-mobile'
-);
+const todo = getDomItem('.todo');
+const topBacground = getDomItem('.todo__top-background');
+const bottomBackGround = getDomItem('.todo__bottom-background');
+const themeSwitcher = getDomItem('.switcher');
+const inputContainer = getDomItem('.input');
+const inputField = getDomItem('.input__text-field');
+const inputCircle = getDomItem('.input__circle');
+const tasks = getDomItem('.tasks');
+const tasksContainer = getDomItem('.tasks__container');
+const taskItem = getDomItemsArray('.tasks__item');
+const taskCompleted = getDomItemsArray('.tasks__item-completed');
+const taskControlsContainer = getDomItem('.tasks__footer');
+const taskControlsContainerMobile = getDomItem('.tasks__controls-mobile');
 const tasksControls = document.querySelectorAll('.tasks__control');
 const taskControlActive = document.querySelectorAll('.tasks__control-active');
 const clearCompletedButton = document.querySelector('.tasks__clear-completed');
@@ -33,39 +33,15 @@ function getItemsArray(selector) {
   return items;
 }
 
-todo.addEventListener('click', function (event) {
-  event.preventDefault();
+todo.addEventListener('mousedown', function (event) {
+  if (event.target.tagName.toLowerCase === 'a') {
+    event.preventDefault();
+  }
 
   if (event.target.classList.contains('switcher')) {
     setTheme();
   }
 });
-
-function getThemeFromStorage() {
-  const theme = localStorage.getItem('theme');
-
-  return theme;
-}
-
-function sendThemeToStorage(theme) {
-  localStorage.setItem('theme', theme);
-}
-
-function setTheme() {
-  const theme = themeSwitcher.dataset.id;
-
-  if (theme === 'day') {
-    themeSwitcher.dataset.id = 'night';
-    sendThemeToStorage('night');
-    setNightTheme();
-  }
-
-  if (theme === 'night') {
-    themeSwitcher.dataset.id = 'day';
-    sendThemeToStorage('day');
-    setDayTheme();
-  }
-}
 
 function fillTaskList() {
   const currentTasks =
@@ -74,7 +50,7 @@ function fillTaskList() {
   if (!currentTasks.length) {
     createEmptyItem(tasksContainer);
   } else {
-    createTaskItem(currentTasks, tasksContainer);
+    createTaskItem('tasks', tasksContainer);
   }
 
   const taskItems = document.querySelectorAll('.tasks__item');
@@ -85,21 +61,6 @@ function fillTaskList() {
   });
 }
 fillTaskList();
-
-function setThemeFromStorage() {
-  const theme = getThemeFromStorage() || 'day';
-
-  if (theme === 'day') {
-    themeSwitcher.dataset.id = 'day';
-    setDayTheme();
-  }
-
-  if (theme === 'night') {
-    themeSwitcher.dataset.id = theme;
-    setNightTheme();
-  }
-}
-setThemeFromStorage();
 
 // function markTaskAsCompleted() {
 //   const tasks = getItemsArray('.tasks__item');
@@ -123,6 +84,7 @@ setThemeFromStorage();
 // }
 // markTaskAsCompleted();
 
+// Функционал по смене темы
 function setNightTheme() {
   const taskItem = getItemsArray('.tasks__item');
   const taskCompleted = getItemsArray('.tasks__item-completed');
@@ -257,3 +219,44 @@ function setDayTheme() {
   );
   footer.style.color = 'rgba(148, 149, 165, 1)';
 }
+
+function getThemeFromStorage() {
+  const theme = localStorage.getItem('theme');
+
+  return theme;
+}
+
+function sendThemeToStorage(theme) {
+  localStorage.setItem('theme', theme);
+}
+
+function setTheme() {
+  const theme = themeSwitcher.dataset.id;
+
+  if (theme === 'day') {
+    themeSwitcher.dataset.id = 'night';
+    sendThemeToStorage('night');
+    setNightTheme();
+  }
+
+  if (theme === 'night') {
+    themeSwitcher.dataset.id = 'day';
+    sendThemeToStorage('day');
+    setDayTheme();
+  }
+}
+
+function setThemeFromStorage() {
+  const theme = getThemeFromStorage() || 'day';
+
+  if (theme === 'day') {
+    themeSwitcher.dataset.id = 'day';
+    setDayTheme();
+  }
+
+  if (theme === 'night') {
+    themeSwitcher.dataset.id = theme;
+    setNightTheme();
+  }
+}
+setThemeFromStorage();
