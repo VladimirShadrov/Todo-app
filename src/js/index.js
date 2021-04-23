@@ -67,10 +67,65 @@ function setTheme() {
   }
 }
 
+function fillTaskList() {
+  const currentTasks =
+    JSON.parse(localStorage.getItem('tasks')) || defaultTasks;
+
+  if (!currentTasks.length) {
+    createEmptyItem(tasksContainer);
+  } else {
+    createTaskItem(currentTasks, tasksContainer);
+  }
+
+  const taskItems = document.querySelectorAll('.tasks__item');
+  taskItems.forEach((item) => {
+    if (item.dataset.id === 'true') {
+      item.classList.add('tasks__item-completed');
+    }
+  });
+}
+fillTaskList();
+
+function setThemeFromStorage() {
+  const theme = getThemeFromStorage() || 'day';
+
+  if (theme === 'day') {
+    themeSwitcher.dataset.id = 'day';
+    setDayTheme();
+  }
+
+  if (theme === 'night') {
+    themeSwitcher.dataset.id = theme;
+    setNightTheme();
+  }
+}
+setThemeFromStorage();
+
+// function markTaskAsCompleted() {
+//   const tasks = getItemsArray('.tasks__item');
+
+//   tasks.forEach((task) => {
+//     task.addEventListener('click', (event) => {
+//       if (
+//         event.target.classList.contains('tasks__circle') ||
+//         event.target.classList.contains('tasks__text')
+//       ) {
+//         task.classList.toggle('tasks__item-completed');
+//       }
+
+//       if (task.dataset.id === 'true') {
+//         task.dataset.id = 'false';
+//       } else {
+//         task.dataset.id = 'true';
+//       }
+//     });
+//   });
+// }
+// markTaskAsCompleted();
+
 function setNightTheme() {
   const taskItem = getItemsArray('.tasks__item');
   const taskCompleted = getItemsArray('.tasks__item-completed');
-  console.log(taskItem, taskCompleted);
 
   topBacground.style.background =
     "url('./images/night-bg.png') center / cover no-repeat";
@@ -202,32 +257,3 @@ function setDayTheme() {
   );
   footer.style.color = 'rgba(148, 149, 165, 1)';
 }
-
-function fillTaskList() {
-  const currentTasks =
-    JSON.parse(localStorage.getItem('tasks')) || defaultTasks;
-  createTaskItem(currentTasks, tasksContainer);
-
-  const taskItems = document.querySelectorAll('.tasks__item');
-  taskItems.forEach((item) => {
-    if (item.dataset.id === 'true') {
-      item.classList.add('tasks__item-completed');
-    }
-  });
-}
-fillTaskList();
-
-function setThemeFromStorage() {
-  const theme = getThemeFromStorage() || 'day';
-
-  if (theme === 'day') {
-    themeSwitcher.dataset.id = 'day';
-    setDayTheme();
-  }
-
-  if (theme === 'night') {
-    themeSwitcher.dataset.id = theme;
-    setNightTheme();
-  }
-}
-setThemeFromStorage();
