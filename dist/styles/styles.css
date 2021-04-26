@@ -463,6 +463,7 @@ body {
     border: 1px solid #e3e4f1;
     border-radius: 50%;
     cursor: pointer;
+    background: none;
     -webkit-transition: 0.3s;
     -o-transition: 0.3s;
     transition: 0.3s; }

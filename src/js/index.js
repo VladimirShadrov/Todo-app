@@ -70,31 +70,28 @@ todo.addEventListener('mousedown', function (event) {
 fillTaskList('tasks', defaultTasks, tasksLeft, tasksContainer, '.tasks__item');
 
 // Задать ховер эффект кругу слева от задачи
-function setHoverEffect() {
-  const circles = getItemsArray('.tasks__circle');
-  const text = getItemsArray('.tasks__text');
 
-  text.forEach((item) => {
-    item.addEventListener('mouseover', () => {
-      item.previousElementSibling.classList.add('tasks__circle-gradient');
-    });
+todo.addEventListener('mouseover', (event) => {
+  if (event.target.classList.contains('tasks__circle')) {
+    event.target.classList.add('tasks__circle-gradient');
+  }
 
-    item.addEventListener('mouseout', () => {
-      item.previousElementSibling.classList.remove('tasks__circle-gradient');
-    });
-  });
+  if (event.target.classList.contains('tasks__text')) {
+    event.target.previousElementSibling.classList.add('tasks__circle-gradient');
+  }
+});
 
-  circles.forEach((circle) => {
-    circle.addEventListener('mouseover', () => {
-      circle.classList.add('tasks__circle-gradient');
-    });
+todo.addEventListener('mouseout', (event) => {
+  if (event.target.classList.contains('tasks__circle')) {
+    event.target.classList.remove('tasks__circle-gradient');
+  }
 
-    circle.addEventListener('mouseout', () => {
-      circle.classList.remove('tasks__circle-gradient');
-    });
-  });
-}
-setHoverEffect();
+  if (event.target.classList.contains('tasks__text')) {
+    event.target.previousElementSibling.classList.remove(
+      'tasks__circle-gradient'
+    );
+  }
+});
 
 // Функционал по смене темы
 function setNightTheme() {
