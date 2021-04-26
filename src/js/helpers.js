@@ -40,14 +40,15 @@ export function setDataArrayToLocalStorage(key, dataArray) {
 }
 
 // Создать задачу
-export function createTaskItem(key, container) {
-  const tasks = getDataArrayFromLocalStorage(key);
+export function createTaskItem(data, container) {
+  // const tasks = getDataArrayFromLocalStorage(key);
+  const tasks = data;
 
   let html = '';
 
   tasks.forEach((task) => {
     html += `
-    <div class="tasks__item" data-id="${task.completed}">
+    <div class="tasks__item" data-completed="${task.completed}">
       <div class="tasks__circle"></div>
       <p class="tasks__text">${task.text}</p>
       <a href="#" class="tasks__close-btn" data-name="delete-task" data-id="${task.id}"></a>
@@ -70,4 +71,51 @@ export function createEmptyItem(container) {
 
   container.innerHTML = '';
   container.insertAdjacentHTML('afterbegin', html);
+}
+
+// Отрисовать текущие задачи
+export function fillTaskList(
+  key,
+  defaultTasks,
+  tasksLeftSelector,
+  container,
+  tasksCompletedSelector
+) {
+  const tasks = getDataArrayFromLocalStorage(key) || defaultTasks;
+  const currentTasks = sortCompletedTasks(tasks).totalTasks;
+  const unfinishedTasks = sortCompletedTasks(tasks).unperformed;
+
+  tasksLeftSelector.innerHTML = unfinishedTasks;
+
+  if (!currentTasks.length) {
+    createEmptyItem(container);
+  } else {
+    createTaskItem(currentTasks, container);
+  }
+
+  setTasksClassCompleted(tasksCompletedSelector);
+}
+
+// Сортировать выполненные задачи
+export function sortCompletedTasks(tasks) {
+  const completedTasks = tasks.filter((item) => item.completed);
+  const incompletedTasks = tasks.filter((item) => !item.completed);
+
+  const currentTasks = [...incompletedTasks, ...completedTasks];
+
+  return {
+    totalTasks: currentTasks,
+    unperformed: incompletedTasks.length,
+  };
+}
+
+// Отметить выполненные задачи
+export function setTasksClassCompleted(selector) {
+  const tasks = getDomItemsArray(selector);
+
+  tasks.forEach((task) => {
+    if (task.dataset.completed === 'true') {
+      task.classList.add('tasks__item-completed');
+    }
+  });
 }

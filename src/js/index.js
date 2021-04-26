@@ -2,10 +2,13 @@ import '../styles/styles.scss';
 import '../styles/general-settings.scss';
 import '../styles/todo.scss';
 import { defaultTasks } from './data';
-import { createEmptyItem } from './helpers';
-import { createTaskItem } from './helpers';
-import { getDomItem } from './helpers';
-import { getDomItemsArray } from './helpers';
+import {
+  createEmptyItem,
+  createTaskItem,
+  getDomItem,
+  getDomItemsArray,
+  fillTaskList,
+} from './helpers';
 
 // Перенос изображений и шрифтов
 require.context('../images', true, /\.(png|jpg|svg|gif)$/);
@@ -27,6 +30,7 @@ const tasksControls = document.querySelectorAll('.tasks__control');
 const taskControlActive = document.querySelectorAll('.tasks__control-active');
 const clearCompletedButton = document.querySelector('.tasks__clear-completed');
 const footer = document.querySelector('.footer');
+const tasksLeft = getDomItem('.tasks__left');
 
 function getItemsArray(selector) {
   const items = Array.from(document.querySelectorAll(selector));
@@ -43,24 +47,7 @@ todo.addEventListener('mousedown', function (event) {
   }
 });
 
-function fillTaskList() {
-  const currentTasks =
-    JSON.parse(localStorage.getItem('tasks')) || defaultTasks;
-
-  if (!currentTasks.length) {
-    createEmptyItem(tasksContainer);
-  } else {
-    createTaskItem('tasks', tasksContainer);
-  }
-
-  const taskItems = document.querySelectorAll('.tasks__item');
-  taskItems.forEach((item) => {
-    if (item.dataset.id === 'true') {
-      item.classList.add('tasks__item-completed');
-    }
-  });
-}
-fillTaskList();
+fillTaskList('tasks', defaultTasks, tasksLeft, tasksContainer, '.tasks__item');
 
 // function markTaskAsCompleted() {
 //   const tasks = getItemsArray('.tasks__item');
