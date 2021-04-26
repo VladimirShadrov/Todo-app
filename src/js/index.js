@@ -59,32 +59,42 @@ todo.addEventListener('mousedown', function (event) {
       tasksContainer,
       '.tasks__item'
     );
+    if (themeSwitcher.dataset.id === 'night') {
+      setNightTheme();
+    } else {
+      setDayTheme();
+    }
   }
 });
 
 fillTaskList('tasks', defaultTasks, tasksLeft, tasksContainer, '.tasks__item');
 
-// function markTaskAsCompleted() {
-//   const tasks = getItemsArray('.tasks__item');
+// Задать ховер эффект кругу слева от задачи
+function setHoverEffect() {
+  const circles = getItemsArray('.tasks__circle');
+  const text = getItemsArray('.tasks__text');
 
-//   tasks.forEach((task) => {
-//     task.addEventListener('click', (event) => {
-//       if (
-//         event.target.classList.contains('tasks__circle') ||
-//         event.target.classList.contains('tasks__text')
-//       ) {
-//         task.classList.toggle('tasks__item-completed');
-//       }
+  text.forEach((item) => {
+    item.addEventListener('mouseover', () => {
+      item.previousElementSibling.classList.add('tasks__circle-gradient');
+    });
 
-//       if (task.dataset.id === 'true') {
-//         task.dataset.id = 'false';
-//       } else {
-//         task.dataset.id = 'true';
-//       }
-//     });
-//   });
-// }
-// markTaskAsCompleted();
+    item.addEventListener('mouseout', () => {
+      item.previousElementSibling.classList.remove('tasks__circle-gradient');
+    });
+  });
+
+  circles.forEach((circle) => {
+    circle.addEventListener('mouseover', () => {
+      circle.classList.add('tasks__circle-gradient');
+    });
+
+    circle.addEventListener('mouseout', () => {
+      circle.classList.remove('tasks__circle-gradient');
+    });
+  });
+}
+setHoverEffect();
 
 // Функционал по смене темы
 function setNightTheme() {

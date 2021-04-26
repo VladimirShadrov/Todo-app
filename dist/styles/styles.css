@@ -456,13 +456,19 @@ body {
     -webkit-transition: 0.3s;
     -o-transition: 0.3s;
     transition: 0.3s; }
-  .tasks__circle {
-    width: 24px;
+  .tasks__circle, .tasks__circle-gradient {
+    width: 25px;
     height: 24px;
     margin-right: 24px;
     border: 1px solid #e3e4f1;
     border-radius: 50%;
-    cursor: pointer; }
+    cursor: pointer;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s; }
+  .tasks__circle-gradient {
+    border: none;
+    background: url("../images/oval.svg") center/cover no-repeat; }
   .tasks__text {
     width: 90%;
     cursor: pointer; }

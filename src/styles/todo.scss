@@ -158,13 +158,20 @@
     transition: 0.3s;
   }
 
-  &__circle {
-    width: 24px;
+  &__circle,
+  &__circle-gradient {
+    width: 25px;
     height: 24px;
     margin-right: 24px;
     border: 1px solid rgba(227, 228, 241, 1);
     border-radius: 50%;
     cursor: pointer;
+    transition: 0.3s;
+  }
+
+  &__circle-gradient {
+    border: none;
+    background: url('../images/oval.svg') center / cover no-repeat;
   }
 
   &__text {
