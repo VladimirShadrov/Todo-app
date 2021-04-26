@@ -1,4 +1,5 @@
 import { setDataArrayToLocalStorage } from './helpers';
+import { setIdArrayItems } from './helpers';
 
 export const defaultTasks = [
   {
@@ -24,5 +25,6 @@ export const defaultTasks = [
 ];
 
 if (!localStorage.getItem('tasks')) {
-  setDataArrayToLocalStorage('tasks', defaultTasks);
+  const tasks = setIdArrayItems(defaultTasks);
+  setDataArrayToLocalStorage('tasks', tasks);
 }

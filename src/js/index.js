@@ -8,6 +8,7 @@ import {
   getDomItem,
   getDomItemsArray,
   fillTaskList,
+  markTaskAsCompleted,
 } from './helpers';
 
 // Перенос изображений и шрифтов
@@ -44,6 +45,20 @@ todo.addEventListener('mousedown', function (event) {
 
   if (event.target.classList.contains('switcher')) {
     setTheme();
+  }
+
+  if (
+    event.target.classList.contains('tasks__text') ||
+    event.target.classList.contains('tasks__circle')
+  ) {
+    markTaskAsCompleted(
+      'tasks',
+      event,
+      defaultTasks,
+      tasksLeft,
+      tasksContainer,
+      '.tasks__item'
+    );
   }
 });
 
