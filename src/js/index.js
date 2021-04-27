@@ -13,6 +13,7 @@ import {
   setIdArrayItems,
   setDataArrayToLocalStorage,
   deleteTask,
+  sortTasks,
 } from './helpers';
 
 // Перенос изображений и шрифтов
@@ -32,10 +33,10 @@ const taskItem = getDomItemsArray('.tasks__item');
 const taskCompleted = getDomItemsArray('.tasks__item-completed');
 const taskControlsContainer = getDomItem('.tasks__footer');
 const taskControlsContainerMobile = getDomItem('.tasks__controls-mobile');
-const tasksControls = document.querySelectorAll('.tasks__control');
-const taskControlActive = document.querySelectorAll('.tasks__control-active');
-const clearCompletedButton = document.querySelector('.tasks__clear-completed');
-const footer = document.querySelector('.footer');
+const tasksControls = getDomItemsArray('.tasks__control');
+const taskControlActive = getDomItemsArray('.tasks__control-active');
+const clearCompletedButton = getDomItem('.tasks__clear-completed');
+const footer = getDomItem('.footer');
 const tasksLeft = getDomItem('.tasks__left');
 
 function getItemsArray(selector) {
@@ -80,6 +81,42 @@ todo.addEventListener('mousedown', function (event) {
 
     const tasksWithNewId = setIdArrayItems(allTasks);
     setDataArrayToLocalStorage('tasks', tasksWithNewId);
+    fillTaskList(
+      'tasks',
+      defaultTasks,
+      tasksLeft,
+      tasksContainer,
+      '.tasks__item'
+    );
+    checkTheme();
+  }
+
+  // Переключение между табами выбора статуса задач
+  // if (event.target.classList.contains('tasks__control')) {
+  //   tasksControls.forEach((control) => {
+  //     control.classList.remove('tasks__control-active');
+  //     control.style.color = 'rgba(91, 94, 126, 1)';
+  //   });
+  //   event.target.classList.add('tasks__control-active');
+  //   const activeControls = getDomItemsArray('.tasks__control-active');
+
+  //   console.log(activeControls);
+  // }
+
+  // Показать активные задачи
+  if (event.target.dataset.id === 'active') {
+    sortTasks('tasks', false, tasksContainer, '.tasks__item');
+    checkTheme();
+  }
+
+  // Показать завершенные задачи
+  if (event.target.dataset.id === 'completed') {
+    sortTasks('tasks', true, tasksContainer, '.tasks__item');
+    checkTheme();
+  }
+
+  // Показать все задачи
+  if (event.target.dataset.id === 'all') {
     fillTaskList(
       'tasks',
       defaultTasks,

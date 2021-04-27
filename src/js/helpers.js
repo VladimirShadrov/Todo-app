@@ -152,8 +152,10 @@ export function markTaskAsCompleted(
   );
 }
 
-// Удалить задачу
-export function deleteTask() {
-  // const target = targetElement;
-  // console.log(target.target);
+// Сортировать задачи
+export function sortTasks(key, status, container, selector) {
+  const allTasks = getDataArrayFromLocalStorage(key);
+  const result = allTasks.filter((item) => item.completed === status);
+  createTaskItem(result, container);
+  setTasksClassCompleted(selector);
 }
