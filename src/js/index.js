@@ -126,6 +126,22 @@ todo.addEventListener('mousedown', function (event) {
     );
     checkTheme();
   }
+
+  // Удалить завершенные задачи
+  if (event.target.classList.contains('tasks__clear-completed')) {
+    const allTasks = getDataArrayFromLocalStorage('tasks');
+    const activeTasks = allTasks.filter((item) => !item.completed);
+    const tasksWithNewId = setIdArrayItems(activeTasks);
+    setDataArrayToLocalStorage('tasks', tasksWithNewId);
+    fillTaskList(
+      'tasks',
+      defaultTasks,
+      tasksLeft,
+      tasksContainer,
+      '.tasks__item'
+    );
+    checkTheme();
+  }
 });
 
 // Создать новую задачу
