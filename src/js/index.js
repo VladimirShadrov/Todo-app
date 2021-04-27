@@ -188,6 +188,37 @@ setInterval(() => {
   }
 }, 100);
 
+// Перемещение элементов списка
+tasksContainer.addEventListener('dragstart', (event) => {
+  const item = event.target.closest('.tasks__item');
+  item.classList.add('selected');
+});
+
+tasksContainer.addEventListener('dragend', (event) => {
+  const item = event.target.closest('.tasks__item');
+  item.classList.remove('selected');
+});
+
+tasksContainer.addEventListener('dragover', (event) => {
+  event.preventDefault();
+
+  const activeElement = tasksContainer.querySelector('.selected');
+  const currentElement = event.target;
+  console.log(currentElement);
+  const movableItem =
+    activeElement !== currentElement &&
+    currentElement.classList.contains('tasks__item');
+
+  if (!movableItem) return;
+
+  const nextElement =
+    currentElement === activeElement.nextElementSibling
+      ? currentElement.nextElementSibling
+      : currentElement;
+
+  tasksContainer.insertBefore(activeElement, nextElement);
+});
+
 // Заполнить таск лист текущими задачами
 fillTaskList('tasks', defaultTasks, tasksLeft, tasksContainer, '.tasks__item');
 

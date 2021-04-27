@@ -47,7 +47,7 @@ export function createTaskItem(data, container) {
 
   tasks.forEach((task) => {
     html += `
-    <div class="tasks__item" data-completed="${task.completed}" data-id="${task.id}">
+    <div class="tasks__item" data-completed="${task.completed}" data-id="${task.id}" draggable="true">
       <div class="tasks__circle"></div>
       <p class="tasks__text">${task.text}</p>
       <a href="#" class="tasks__close-btn" data-name="delete-task" data-id="${task.id}"></a>
