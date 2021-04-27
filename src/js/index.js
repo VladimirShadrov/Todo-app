@@ -9,6 +9,9 @@ import {
   getDomItemsArray,
   fillTaskList,
   markTaskAsCompleted,
+  getDataArrayFromLocalStorage,
+  setIdArrayItems,
+  setDataArrayToLocalStorage,
 } from './helpers';
 
 // Перенос изображений и шрифтов
@@ -20,6 +23,7 @@ const bottomBackGround = getDomItem('.todo__bottom-background');
 const themeSwitcher = getDomItem('.switcher');
 const inputContainer = getDomItem('.input');
 const inputField = getDomItem('.input__text-field');
+const createToDoText = getDomItem('.input__info');
 const inputCircle = getDomItem('.input__circle');
 const tasks = getDomItem('.tasks');
 const tasksContainer = getDomItem('.tasks__container');
@@ -59,18 +63,59 @@ todo.addEventListener('mousedown', function (event) {
       tasksContainer,
       '.tasks__item'
     );
-    if (themeSwitcher.dataset.id === 'night') {
-      setNightTheme();
-    } else {
-      setDayTheme();
-    }
+    checkTheme();
   }
 });
 
+// Создать новую задачу
+
+inputField.addEventListener('keydown', (event) => {
+  if (event.keyCode === 13) {
+    const newTask = {
+      text: inputField.value || 'Some text',
+      completed: false,
+      id: 0,
+    };
+
+    inputField.value = '';
+    inputField.blur();
+
+    let tasksFromStorage = getDataArrayFromLocalStorage('tasks');
+    tasksFromStorage.unshift(newTask);
+    const tasksWithNewId = setIdArrayItems(tasksFromStorage);
+    setDataArrayToLocalStorage('tasks', tasksWithNewId);
+    fillTaskList(
+      'tasks',
+      defaultTasks,
+      tasksLeft,
+      tasksContainer,
+      '.tasks__item'
+    );
+    checkTheme();
+  }
+});
+
+setInterval(() => {
+  if (inputField === document.activeElement) {
+    inputField.previousElementSibling.classList.add('input__info-active');
+    inputField.previousElementSibling.textContent = 'Currently typing';
+    const currentlyTyping = getDomItem('.input__info-active');
+
+    if (themeSwitcher.dataset.id === 'night') {
+      currentlyTyping.style.color = 'rgba(200, 203, 231, 1)';
+    } else {
+      currentlyTyping.style.color = 'rgba(57, 58, 75, 1)';
+    }
+  } else {
+    inputField.previousElementSibling.classList.remove('input__info-active');
+    inputField.previousElementSibling.textContent = 'Create a new todo…';
+  }
+}, 100);
+
+// Заполнить таск лист текущими задачами
 fillTaskList('tasks', defaultTasks, tasksLeft, tasksContainer, '.tasks__item');
 
 // Задать ховер эффект кругу слева от задачи
-
 todo.addEventListener('mouseover', (event) => {
   if (event.target.classList.contains('tasks__circle')) {
     event.target.classList.add('tasks__circle-gradient');
@@ -106,6 +151,7 @@ function setNightTheme() {
   inputContainer.style.backgroundColor = 'rgba(37, 39, 61, 1)';
   inputContainer.style.color = 'rgba(118, 121, 146, 1)';
   inputField.style.color = 'rgba(200, 203, 231, 1)';
+  createToDoText.style.color = 'rgba(118, 121, 146, 1)';
   inputCircle.style.border = '1px solid rgba(57, 58, 75, 0.95)';
   tasks.style.backgroundColor = 'rgba(37, 39, 61, 1)';
   tasks.style.boxShadow = '0px 35px 50px -15px rgba(0, 0, 0, 0.5)';
@@ -175,6 +221,7 @@ function setDayTheme() {
   inputContainer.style.backgroundColor = 'rgba(255, 255, 255, 1)';
   inputContainer.style.color = 'rgba(148, 149, 165, 1)';
   inputField.style.color = 'rgba(73, 76, 107, 1)';
+  createToDoText.style.color = 'rgba(148, 149, 165, 1)';
   inputCircle.style.border = '1px solid rgba(227, 228, 241, 1)';
   tasks.style.backgroundColor = 'rgba(255, 255, 255, 1)';
   tasks.style.boxShadow = '0px 35px 50px -15px rgba(194, 195, 214, 0.5)';
@@ -269,3 +316,11 @@ function setThemeFromStorage() {
   }
 }
 setThemeFromStorage();
+
+function checkTheme() {
+  if (themeSwitcher.dataset.id === 'night') {
+    setNightTheme();
+  } else {
+    setDayTheme();
+  }
+}
