@@ -151,3 +151,9 @@ export function markTaskAsCompleted(
     tasksCompletedSelector
   );
 }
+
+// Удалить задачу
+export function deleteTask() {
+  // const target = targetElement;
+  // console.log(target.target);
+}

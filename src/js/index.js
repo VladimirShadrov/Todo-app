@@ -12,6 +12,7 @@ import {
   getDataArrayFromLocalStorage,
   setIdArrayItems,
   setDataArrayToLocalStorage,
+  deleteTask,
 } from './helpers';
 
 // Перенос изображений и шрифтов
@@ -47,10 +48,12 @@ todo.addEventListener('mousedown', function (event) {
     event.preventDefault();
   }
 
+  // Переключить тему
   if (event.target.classList.contains('switcher')) {
     setTheme();
   }
 
+  // Пометить задачу как завершенную
   if (
     event.target.classList.contains('tasks__text') ||
     event.target.classList.contains('tasks__circle')
@@ -65,10 +68,30 @@ todo.addEventListener('mousedown', function (event) {
     );
     checkTheme();
   }
+
+  // Удалить задачу
+  if (event.target.classList.contains('tasks__close-btn')) {
+    const allTasks = getDataArrayFromLocalStorage('tasks');
+    const selectedTask = allTasks.find(
+      (item) => item.id === +event.target.dataset.id
+    );
+    const taskIndex = allTasks.findIndex((item) => item === selectedTask);
+    allTasks.splice(taskIndex, 1);
+
+    const tasksWithNewId = setIdArrayItems(allTasks);
+    setDataArrayToLocalStorage('tasks', tasksWithNewId);
+    fillTaskList(
+      'tasks',
+      defaultTasks,
+      tasksLeft,
+      tasksContainer,
+      '.tasks__item'
+    );
+    checkTheme();
+  }
 });
 
 // Создать новую задачу
-
 inputField.addEventListener('keydown', (event) => {
   if (event.keyCode === 13) {
     const newTask = {
