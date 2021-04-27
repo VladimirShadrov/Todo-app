@@ -1,4 +1,4 @@
-import { defaultTasks } from './data';
+import { checkTheme } from './index';
 
 // Получить ДОМ элемент
 export function getDomItem(selector) {
@@ -158,4 +158,25 @@ export function sortTasks(key, status, container, selector) {
   const result = allTasks.filter((item) => item.completed === status);
   createTaskItem(result, container);
   setTasksClassCompleted(selector);
+}
+
+// Обработка элементов списка: задать ID, отпрвить в LocaleStorage, Отрисовать
+export function processListItems(
+  data,
+  key,
+  defaultTasks,
+  tasksLeftSelector,
+  container,
+  tasksCompletedSelector
+) {
+  const tasksWithNewId = setIdArrayItems(data);
+  setDataArrayToLocalStorage('tasks', tasksWithNewId);
+  fillTaskList(
+    key,
+    defaultTasks,
+    tasksLeftSelector,
+    container,
+    tasksCompletedSelector
+  );
+  checkTheme();
 }

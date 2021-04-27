@@ -14,6 +14,7 @@ import {
   setDataArrayToLocalStorage,
   deleteTask,
   sortTasks,
+  processListItems,
 } from './helpers';
 
 // Перенос изображений и шрифтов
@@ -79,29 +80,15 @@ todo.addEventListener('mousedown', function (event) {
     const taskIndex = allTasks.findIndex((item) => item === selectedTask);
     allTasks.splice(taskIndex, 1);
 
-    const tasksWithNewId = setIdArrayItems(allTasks);
-    setDataArrayToLocalStorage('tasks', tasksWithNewId);
-    fillTaskList(
+    processListItems(
+      allTasks,
       'tasks',
       defaultTasks,
       tasksLeft,
       tasksContainer,
       '.tasks__item'
     );
-    checkTheme();
   }
-
-  // Переключение между табами выбора статуса задач
-  // if (event.target.classList.contains('tasks__control')) {
-  //   tasksControls.forEach((control) => {
-  //     control.classList.remove('tasks__control-active');
-  //     control.style.color = 'rgba(91, 94, 126, 1)';
-  //   });
-  //   event.target.classList.add('tasks__control-active');
-  //   const activeControls = getDomItemsArray('.tasks__control-active');
-
-  //   console.log(activeControls);
-  // }
 
   // Показать активные задачи
   if (event.target.dataset.id === 'active') {
@@ -127,20 +114,65 @@ todo.addEventListener('mousedown', function (event) {
     checkTheme();
   }
 
+  // Переключение между табами выбора статуса задач
+  if (event.target.classList.contains('tasks__control')) {
+    tasksControls.forEach((control) => {
+      control.classList.remove('tasks__control-active');
+      if (themeSwitcher.dataset.id === 'night') {
+        control.style.color = 'rgba(91, 94, 126, 1)';
+      } else {
+        control.style.color = 'rgba(148, 149, 165, 1)';
+      }
+    });
+    event.target.classList.add('tasks__control-active');
+    const activeControl = getDomItem('.tasks__control-active');
+
+    if (themeSwitcher.dataset.id === 'night') {
+      tasksControls.forEach((control) => {
+        control.addEventListener('mouseover', () => {
+          control.style.color = 'rgba(227,228,241,1)';
+        });
+      });
+      tasksControls.forEach((control) => {
+        control.addEventListener('mouseout', () => {
+          control.style.color = 'rgba(91,94,126,1)';
+        });
+      });
+    } else {
+      tasksControls.forEach((control) => {
+        control.addEventListener('mouseover', () => {
+          control.style.color = 'rgba(73, 76, 107, 1)';
+        });
+      });
+      tasksControls.forEach((control) => {
+        control.addEventListener('mouseout', () => {
+          control.style.color = 'rgba(148, 149, 165, 1)';
+        });
+      });
+    }
+
+    activeControl.style.color = 'rgba(58,124,253,1)';
+    activeControl.addEventListener('mouseover', () => {
+      activeControl.style.color = 'rgba(58,124,253,1)';
+    });
+    activeControl.addEventListener('mouseout', () => {
+      activeControl.style.color = 'rgba(58,124,253,1)';
+    });
+  }
+
   // Удалить завершенные задачи
   if (event.target.classList.contains('tasks__clear-completed')) {
     const allTasks = getDataArrayFromLocalStorage('tasks');
     const activeTasks = allTasks.filter((item) => !item.completed);
-    const tasksWithNewId = setIdArrayItems(activeTasks);
-    setDataArrayToLocalStorage('tasks', tasksWithNewId);
-    fillTaskList(
+
+    processListItems(
+      activeTasks,
       'tasks',
       defaultTasks,
       tasksLeft,
       tasksContainer,
       '.tasks__item'
     );
-    checkTheme();
   }
 });
 
@@ -158,16 +190,15 @@ inputField.addEventListener('keydown', (event) => {
 
     let tasksFromStorage = getDataArrayFromLocalStorage('tasks');
     tasksFromStorage.unshift(newTask);
-    const tasksWithNewId = setIdArrayItems(tasksFromStorage);
-    setDataArrayToLocalStorage('tasks', tasksWithNewId);
-    fillTaskList(
+
+    processListItems(
+      tasksFromStorage,
       'tasks',
       defaultTasks,
       tasksLeft,
       tasksContainer,
       '.tasks__item'
     );
-    checkTheme();
   }
 });
 
@@ -204,7 +235,6 @@ tasksContainer.addEventListener('dragover', (event) => {
 
   const activeElement = tasksContainer.querySelector('.selected');
   const currentElement = event.target;
-  console.log(currentElement);
   const movableItem =
     activeElement !== currentElement &&
     currentElement.classList.contains('tasks__item');
@@ -424,7 +454,7 @@ function setThemeFromStorage() {
 }
 setThemeFromStorage();
 
-function checkTheme() {
+export function checkTheme() {
   if (themeSwitcher.dataset.id === 'night') {
     setNightTheme();
   } else {
